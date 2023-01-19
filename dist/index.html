@@ -1,13 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Battleship</title>
     <script src="main.js" defer></script>
-</head>
-<body>
-    
-</body>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="title">Battleship</div>
+      <div class="boards">
+        <div>
+          <span>Player</span>
+          <div class="playerBoard"></div>
+        </div>
+        <div class="UIBoard">
+          <div class="ships">
+            <span> Health </span>
+            <div class="ship">▣ ◻ ◻ ◻ ◻</div>
+            <div class="ship">▣ ▣ ▣ ▣ ▣</div>
+            <div class="ship">▣ ▣ ▣ ▣</div>
+            <div class="ship">▣ ▣ ▣</div>
+            <div class="ship">▣ ▣ ▣</div>
+            <div class="ship">▣ ▣</div>
+          </div>
+          <div class="buttons">
+            <button>Place Ships</button>
+            <button>Start</button>
+          </div>
+        </div>
+        <div>
+          <span>Computer</span>
+          <div class="computerBoard"></div>
+        </div>
+      </div>
+    </div>
+    <div class="footer">Copyright © Bao Nguyen 2023</div>
+  </body>
 </html>

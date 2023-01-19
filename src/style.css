@@ -1,3 +1,90 @@
-body, html {
-    background-color: black;
+body {
+  background: linear-gradient(grey, black);
+  color: white;
+  margin: 0px;
+  height: 100vh;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.title {
+  margin: 25px;
+  font-size: 4em;
+}
+span {
+  font-size: 2rem;
+}
+.boards {
+  display: flex;
+  text-align: center;
+  padding: 20px;
+  gap: 5rem;
+}
+
+.playerBoard,
+.computerBoard {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  background-color: black;
+  gap: 5px;
+  padding: 5px;
+  margin-top: 10px;
+}
+
+.playerBoard > *,
+.computerBoard > * {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  background-color: steelblue;
+  color: white;
+}
+
+.UIBoard {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+}
+.displayTurn {
+  position: absolute;
+  top: 0;
+  font-size: 3rem;
+}
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.ships {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.ship {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: larger;
+  color: red;
+}
+button {
+  font-size: 1.5rem;
+  border-radius: 8px;
+  padding: 5px 10px;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  text-align: center;
+  width: 100%;
 }
