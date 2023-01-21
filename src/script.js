@@ -6,7 +6,8 @@ class Ship {
   }
 
   hit() {
-    return (this.hits += 1);
+    this.hits += 1;
+    return "Hit!";
   }
 
   isSunk() {
@@ -28,6 +29,7 @@ class Gameboard {
     for (let i = 0; i < this.board.length; i++) {
       this.board[i] = {
         hasShip: false,
+        ship: null,
         isShot: false,
       };
     }
@@ -47,14 +49,23 @@ class Gameboard {
       if (rotate === true) {
         for (let i = 0; i < ship.length * 10; i += 10) {
           this.board[index + i].hasShip = true;
+          this.board[index + i].ship = ship;
         }
       } else {
         for (let i = 0; i < ship.length; i++) {
           this.board[index + i].hasShip = true;
+          this.board[index + i].ship = ship;
         }
       }
     }
     return this;
+  }
+
+  receiveAttack(index) {
+    let location = this.board[index];
+    if (location.isShot === true) return "Already shot here";
+    location.isShot = true;
+    if (location.hasShip === true) return location.ship.hit();
   }
 }
 const gameBoard = new Gameboard();
