@@ -1,5 +1,11 @@
-import { after } from "lodash";
-import { battleship, gameBoard, Gameboard } from "./script";
+import {
+  battleship,
+  gameBoard,
+  Gameboard,
+  player,
+  Player,
+  computer,
+} from "./script";
 
 describe("Class Ship", () => {
   test("Show base ship values", () => {
@@ -15,14 +21,15 @@ describe("Class Ship", () => {
   });
 
   test("Update hit value", () => {
-    for (let i = 1; i <= 5; i++) {
+    for (let i = 1; i <= 4; i++) {
       expect(battleship.hit()).toEqual("Hit!");
       expect(battleship.hits).toEqual(i);
     }
   });
 
   test("update ship to sunk", () => {
-    expect(battleship.isSunk()).toBe(true);
+    expect(battleship.hit()).toBe("Ship sunk!");
+    expect(battleship.sink).toBe(true);
   });
 
   test("update all ship values", () => {
@@ -100,5 +107,29 @@ describe("Class Gameboard", () => {
   test("Gameboard receives attacks on same location", () => {
     gameBoard.receiveAttack(0);
     expect(gameBoard.receiveAttack(0)).toBe("Already shot here");
+  });
+});
+
+describe("Class Player", () => {
+  let testPlayer;
+  let testArr;
+  beforeEach(() => {
+    testPlayer = new Player("me");
+    testArr = Array(100);
+  });
+
+  test("Valid constructed object", () => {
+    testPlayer.battleship = battleship;
+    expect(player).toStrictEqual(testPlayer);
+  });
+
+  test("Create possible moves Array", () => {
+    for (let i = 0; i < 100; i++) testArr[i] = i;
+    expect(computer.possibleMoves).toStrictEqual(testArr);
+  });
+
+  test("Simulate 100 moves", () => {
+    for (let i = 0; i < 100; i++) computer.makeMove();
+    expect(computer.possibleMoves).toStrictEqual([]);
   });
 });

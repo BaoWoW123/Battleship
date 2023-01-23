@@ -7,25 +7,22 @@ class Ship {
 
   hit() {
     this.hits += 1;
-    return "Hit!";
+    return this.hits === this.length ? this.isSunk() : "Hit!";
   }
 
   isSunk() {
-    if (this.hits === this.length) {
-      return (this.sink = true);
-    }
+    this.sink = true;
+    return "Ship sunk!";
   }
 }
 
 class Gameboard {
   constructor() {
-    if (!this.board) {
-      this.board = Array(100);
-      this.createBoard();
-    }
+    if (!this.board) this.createBoard();
   }
 
   createBoard() {
+    this.board = Array(100);
     for (let i = 0; i < this.board.length; i++) {
       this.board[i] = {
         hasShip: false,
@@ -68,6 +65,35 @@ class Gameboard {
     if (location.hasShip === true) return location.ship.hit();
   }
 }
+
+class Player {
+  constructor(player) {
+    this.player = player;
+    this.carrier = null;
+    this.battleship = null;
+    this.boat = null;
+    if (!this.possibleMoves) this.createMoves();
+  }
+
+  createMoves() {
+    this.possibleMoves = Array(100);
+    for (let i = 0; i < this.possibleMoves.length; i++) {
+      this.possibleMoves[i] = i;
+    }
+  }
+
+  makeMove() {
+    let max = this.possibleMoves.length;
+    let randomNum = Math.floor(Math.random() * max);
+    let value = this.possibleMoves[randomNum];
+    this.possibleMoves.splice(randomNum, 1);
+    return value;
+  }
+}
 const gameBoard = new Gameboard();
 let battleship = new Ship(5);
-export { battleship, gameBoard, Gameboard };
+const player = new Player("me");
+const computer = new Player("computer");
+player.battleship = battleship;
+
+export { battleship, gameBoard, Gameboard, player, Player, computer };
