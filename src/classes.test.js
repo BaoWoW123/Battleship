@@ -5,11 +5,13 @@ import {
   player,
   Player,
   computer,
-} from "./script";
+} from "./classes";
+
+import { shipArr } from "./script";
 
 describe("Class Ship", () => {
   test("Show base ship values", () => {
-    expect(battleship).toEqual({
+    expect(shipArr[0]).toEqual({
       length: 5,
       hits: 0,
       sink: false,
@@ -17,23 +19,23 @@ describe("Class Ship", () => {
   });
 
   test("show current hits", () => {
-    expect(battleship.hits).toEqual(0);
+    expect(shipArr[0].hits).toEqual(0);
   });
 
   test("Update hit value", () => {
     for (let i = 1; i <= 4; i++) {
-      expect(battleship.hit()).toEqual("Hit!");
-      expect(battleship.hits).toEqual(i);
+      expect(shipArr[0].hit()).toEqual("Hit!");
+      expect(shipArr[0].hits).toEqual(i);
     }
   });
 
   test("update ship to sunk", () => {
-    expect(battleship.hit()).toBe("Ship sunk!");
-    expect(battleship.sink).toBe(true);
+    expect(shipArr[0].hit()).toBe("Ship sunk!");
+    expect(shipArr[0].sink).toBe(true);
   });
 
   test("update all ship values", () => {
-    expect(battleship).toEqual({
+    expect(shipArr[0]).toEqual({
       length: 5,
       hits: 5,
       sink: true,

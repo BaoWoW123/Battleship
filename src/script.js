@@ -1,99 +1,50 @@
-class Ship {
-  constructor(length) {
-    this.length = length;
-    this.hits = 0;
-    this.sink = false;
-  }
+import { Ship, player, gameBoard } from "./classes";
 
-  hit() {
-    this.hits += 1;
-    return this.hits === this.length ? this.isSunk() : "Hit!";
-  }
+let carrier = new Ship(5);
+let battleship = new Ship(4);
+let cruiser = new Ship(3);
+let sub = new Ship(3);
+let destroyer = new Ship(2);
+let shipArr = [carrier, battleship, cruiser, sub, destroyer];
 
-  isSunk() {
-    this.sink = true;
-    return "Ship sunk!";
+function startGame(div) {}
+let currentDiv;
+
+function selectShip(div, rotate) {
+  if (!currentDiv) currentDiv = div;
+  else {
+    currentDiv.style.color = "white";
+    currentDiv = div;
+  }
+  div.style.color = "green";
+
+  switch (div.className.split(" ")[1]) {
+    case "carrier":
+      hoverShip(shipArr[0], rotate);
+      return shipArr[0];
+    case "battleship":
+      hoverShip(shipArr[1], rotate);
+      return shipArr[1];
+    case "cruiser":
+      hoverShip(shipArr[2], rotate);
+      return shipArr[2];
+    case "sub":
+      hoverShip(shipArr[3], rotate);
+      return shipArr[3];
+    case "destroyer":
+      hoverShip(shipArr[4], rotate);
+      return shipArr[4];
+    default:
+      return;
+  }
+}
+let currentShip;
+function hoverShip(target, rotate) {
+  if (target.constructor.name === "Ship") {
+    return (currentShip = target);
+  } else {
+    gameBoard.placeShip(currentShip, +target.dataset.id, rotate);
   }
 }
 
-class Gameboard {
-  constructor() {
-    if (!this.board) this.createBoard();
-  }
-
-  createBoard() {
-    this.board = Array(100);
-    for (let i = 0; i < this.board.length; i++) {
-      this.board[i] = {
-        hasShip: false,
-        ship: null,
-        isShot: false,
-      };
-    }
-  }
-
-  placeShip(ship, index, rotate) {
-    let row = Math.floor(index / 10);
-    let shipRow = Math.floor((index + ship.length) / 10);
-    let shipRowVert = row + ship.length;
-    //checks if ship is out of bounds
-    if (index >= 100) return;
-    if (row !== shipRow && rotate === false) {
-      return false;
-    } else if (shipRowVert > 10 && rotate === true) {
-      return false;
-    } else {
-      if (rotate === true) {
-        for (let i = 0; i < ship.length * 10; i += 10) {
-          this.board[index + i].hasShip = true;
-          this.board[index + i].ship = ship;
-        }
-      } else {
-        for (let i = 0; i < ship.length; i++) {
-          this.board[index + i].hasShip = true;
-          this.board[index + i].ship = ship;
-        }
-      }
-    }
-    return this;
-  }
-
-  receiveAttack(index) {
-    let location = this.board[index];
-    if (location.isShot === true) return "Already shot here";
-    location.isShot = true;
-    if (location.hasShip === true) return location.ship.hit();
-  }
-}
-
-class Player {
-  constructor(player) {
-    this.player = player;
-    this.carrier = null;
-    this.battleship = null;
-    this.boat = null;
-    if (!this.possibleMoves) this.createMoves();
-  }
-
-  createMoves() {
-    this.possibleMoves = Array(100);
-    for (let i = 0; i < this.possibleMoves.length; i++) {
-      this.possibleMoves[i] = i;
-    }
-  }
-
-  makeMove() {
-    let max = this.possibleMoves.length;
-    let randomNum = Math.floor(Math.random() * max);
-    let value = this.possibleMoves[randomNum];
-    this.possibleMoves.splice(randomNum, 1);
-    return value;
-  }
-}
-const gameBoard = new Gameboard();
-let battleship = new Ship(5);
-const player = new Player("me");
-const computer = new Player("computer");
-player.battleship = battleship;
-
-export { battleship, gameBoard, Gameboard, player, Player, computer };
+export { shipArr, hoverShip, startGame, selectShip };

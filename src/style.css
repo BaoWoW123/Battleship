@@ -16,9 +16,11 @@ body {
   margin: 25px;
   font-size: 4em;
 }
+
 span {
   font-size: 2rem;
 }
+
 .boards {
   display: flex;
   text-align: center;
@@ -55,32 +57,44 @@ span {
   gap: 10px;
   position: relative;
 }
+
+.hasShip {
+  background-color: lime;
+  opacity: 0.8;
+}
 .displayTurn {
   position: absolute;
   top: 0;
   font-size: 3rem;
 }
-.buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
+
 .ships {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  position: relative;
 }
 .ship {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: larger;
-  color: red;
+  font-size: x-large;
+  color: white;
+}
+
+.ship:hover {
+  color: gray;
+  transition: 0.2s;
+  cursor: grab;
 }
 button {
   font-size: 1.5rem;
   border-radius: 8px;
   padding: 5px 10px;
+}
+.rotate {
+  color: green;
+  transition: 0.2s;
 }
 .footer {
   position: absolute;
