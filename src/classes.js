@@ -32,6 +32,8 @@ class Gameboard {
     }
   }
   //CHECK FOR COLLISION +++++++++++++++++++++++++++++
+  //create loop if this cell is null then ok
+  //if cell has ship then dont place ship
   placeShip(ship, index, rotate) {
     let row = Math.floor(index / 10);
     let shipRow = Math.floor((index + ship.length - 1) / 10);
@@ -46,16 +48,16 @@ class Gameboard {
       if (rotate === true) {
         this.clearPrevShip(ship);
         for (let i = 0; i < ship.length * 10; i += 10) {
+          if (this.highlightCell(ship, index + i) == false) return; //highlights & checks for overlap
           this.board[index + i].hasShip = true;
           this.board[index + i].ship = ship;
-          this.highlightCell(index + i);
         }
       } else {
         this.clearPrevShip(ship);
         for (let i = 0; i < ship.length; i++) {
+          if (this.highlightCell(ship, index + i) == false) return;
           this.board[index + i].hasShip = true;
           this.board[index + i].ship = ship;
-          this.highlightCell(index + i);
         }
       }
     }
@@ -67,13 +69,18 @@ class Gameboard {
     for (let i = 0; i < 100; i++) {
       if (this.board[i].ship === ship) {
         this.board[i].ship = null;
+        this.board[i].hasShip = false;
         cells[i].classList.remove("hasShip");
       }
     }
   }
-  highlightCell(index) {
+  highlightCell(ship, index) {
     let cells = document.querySelectorAll(".cell");
     cells[index].classList.add("hasShip");
+    if (this.board[index].hasShip == true && this.board[index].ship !== ship) {
+      this.clearPrevShip(ship)
+      return false;
+    }
   }
 
   receiveAttack(index) {
