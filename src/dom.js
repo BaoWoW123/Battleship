@@ -1,15 +1,12 @@
-import { hoverShip, startGame, selectShip } from "./script";
+import { hoverShip, startGame, selectShip, checkBoard } from "./script";
 
 const board = document.querySelector(".board");
 const playerBoard = document.querySelector(".playerBoard");
 const computerBoard = document.querySelector(".computerBoard");
 const startBtn = document.querySelector(".startBtn");
 const rotateBtn = document.querySelector(".rotateBtn");
-const carrierBtn = document.querySelector(".carrier");
-const battleshipBtn = document.querySelector(".battleship");
-const cruiserBtn = document.querySelector(".cruiser");
-const submarineBtn = document.querySelector(".sub");
-const destroyerBtn = document.querySelector(".destroyer");
+const shipBtns = document.querySelectorAll(".ship");
+const midBoard = document.querySelector(".UIBoard");
 let playerBoardCells;
 let rotate = false;
 
@@ -17,23 +14,21 @@ let rotate = false;
   for (let i = 0; i < 100; i++) {
     const cell = document.createElement("div");
     cell.className = "cell";
-    cell.textContent = i;
     cell.dataset.id = i;
-    cell.addEventListener("click", () => hoverShip(cell, rotate));
+    cell.addEventListener("click", cellEvent); //unable to pass argmuments directly to eventlistener
     playerBoard.append(cell);
   }
-  playerBoardCells = document.querySelectorAll("cell");
+  playerBoardCells = document.querySelectorAll(".cell");
 
   for (let i = 0; i < 100; i++) {
     const cell = document.createElement("div");
     cell.className = "cell";
-    cell.textContent = i;
     cell.dataset.id = i;
     computerBoard.append(cell);
   }
 })();
 
-function rotateShip() {
+rotateBtn.onclick = () => {
   if (rotate == true) {
     rotate = false;
     rotateBtn.classList.remove("rotate");
@@ -41,12 +36,35 @@ function rotateShip() {
     rotate = true;
     rotateBtn.classList.add("rotate");
   }
+};
+
+startBtn.onclick = () => {
+  if(checkBoard() === false) return alert("Place all ships!");
+  removeEvents();
+  midBoard.innerHTML = "";
+  let resetBtn = document.createElement("button");
+  resetBtn.textContent = "Restart";
+  midBoard.append(resetBtn);
+  startGame(startBtn);
+};
+
+shipBtns.forEach((btn) => {
+  btn.addEventListener("click", btnClick);
+});
+
+function btnClick() {
+  selectShip(event.target, rotate);
 }
 
-rotateBtn.onclick = () => rotateShip();
-startBtn.onclick = () => startGame(startBtn);
-carrierBtn.onclick = () => selectShip(carrierBtn, rotate);
-battleshipBtn.onclick = () => selectShip(battleshipBtn, rotate);
-cruiserBtn.onclick = () => selectShip(cruiserBtn, rotate);
-submarineBtn.onclick = () => selectShip(submarineBtn, rotate);
-destroyerBtn.onclick = () => selectShip(destroyerBtn, rotate);
+function cellEvent() {
+  hoverShip(event.target, rotate);
+}
+
+function removeEvents() {
+  shipBtns.forEach((el) => {
+    el.removeEventListener("click", btnClick);
+  });
+  playerBoardCells.forEach((cell) => {
+    cell.removeEventListener("click", cellEvent);
+  });
+}

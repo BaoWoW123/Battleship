@@ -1,4 +1,4 @@
-import { Ship, player, gameBoard } from "./classes";
+import { Ship, gameBoard } from "./classes";
 
 let carrier = new Ship(5);
 let battleship = new Ship(4);
@@ -47,4 +47,16 @@ function hoverShip(target, rotate) {
   }
 }
 
-export { shipArr, hoverShip, startGame, selectShip };
+function checkBoard() {
+    let total = 0;
+    let tempArr = [];
+    gameBoard.board.forEach(cell => {
+        if (cell.ship != null && !tempArr.includes(cell.ship)) { 
+            tempArr.push(cell.ship)
+            total++
+        }
+    })
+    return (total === 5);
+}
+
+export { shipArr, hoverShip, startGame, selectShip, checkBoard };
