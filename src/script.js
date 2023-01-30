@@ -1,11 +1,4 @@
-import { Ship, gameBoard } from "./classes";
-
-let carrier = new Ship(5);
-let battleship = new Ship(4);
-let cruiser = new Ship(3);
-let sub = new Ship(3);
-let destroyer = new Ship(2);
-let shipArr = [carrier, battleship, cruiser, sub, destroyer];
+import { playerShips, gameBoard, compShips, compBoard } from "./classes";
 
 function startGame(div) {}
 let currentDiv;
@@ -20,20 +13,20 @@ function selectShip(div, rotate) {
 
   switch (div.className.split(" ")[1]) {
     case "carrier":
-      hoverShip(shipArr[0], rotate);
-      return shipArr[0];
+      hoverShip(playerShips[0], rotate);
+      return playerShips[0];
     case "battleship":
-      hoverShip(shipArr[1], rotate);
-      return shipArr[1];
+      hoverShip(playerShips[1], rotate);
+      return playerShips[1];
     case "cruiser":
-      hoverShip(shipArr[2], rotate);
-      return shipArr[2];
+      hoverShip(playerShips[2], rotate);
+      return playerShips[2];
     case "sub":
-      hoverShip(shipArr[3], rotate);
-      return shipArr[3];
+      hoverShip(playerShips[3], rotate);
+      return playerShips[3];
     case "destroyer":
-      hoverShip(shipArr[4], rotate);
-      return shipArr[4];
+      hoverShip(playerShips[4], rotate);
+      return playerShips[4];
     default:
       return;
   }
@@ -58,5 +51,19 @@ function checkBoard() {
     })
     return (total === 5);
 }
+function targetCell() {
+    console.log(event.target.dataset.id)
+}
 
-export { shipArr, hoverShip, startGame, selectShip, checkBoard };
+function createCompBoard() {
+    for(let i = 0; i < compShips.length; i++) {     
+        let randomNum = Math.floor(Math.random() * 100);
+        let randomBool = Math.random() < 0.5;
+
+        if (compBoard.placeShip(compShips[i], randomNum, randomBool) === false) {
+          i-=1;
+        }
+    }
+}
+
+export { hoverShip, startGame, selectShip, checkBoard, targetCell, createCompBoard };

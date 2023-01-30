@@ -1,4 +1,4 @@
-import { hoverShip, startGame, selectShip, checkBoard } from "./script";
+import { hoverShip, startGame, selectShip, checkBoard, targetCell, createCompBoard } from "./script";
 
 const board = document.querySelector(".board");
 const playerBoard = document.querySelector(".playerBoard");
@@ -7,7 +7,8 @@ const startBtn = document.querySelector(".startBtn");
 const rotateBtn = document.querySelector(".rotateBtn");
 const shipBtns = document.querySelectorAll(".ship");
 const midBoard = document.querySelector(".UIBoard");
-let playerBoardCells;
+let playerCells;
+let compCells;
 let rotate = false;
 
 (function createBoards() {
@@ -18,14 +19,16 @@ let rotate = false;
     cell.addEventListener("click", cellEvent); //unable to pass argmuments directly to eventlistener
     playerBoard.append(cell);
   }
-  playerBoardCells = document.querySelectorAll(".cell");
+  playerCells = document.querySelectorAll(".cell");
 
   for (let i = 0; i < 100; i++) {
     const cell = document.createElement("div");
-    cell.className = "cell";
+    cell.className = "compCell";
+    cell.textContent = i;
     cell.dataset.id = i;
     computerBoard.append(cell);
   }
+  compCells = document.querySelectorAll('.compCell')
 })();
 
 rotateBtn.onclick = () => {
@@ -38,6 +41,7 @@ rotateBtn.onclick = () => {
   }
 };
 
+createCompBoard(); //TEST
 startBtn.onclick = () => {
   if(checkBoard() === false) return alert("Place all ships!");
   removeEvents();
@@ -45,6 +49,10 @@ startBtn.onclick = () => {
   let resetBtn = document.createElement("button");
   resetBtn.textContent = "Restart";
   midBoard.append(resetBtn);
+  createCompBoard();
+  document.querySelectorAll(".compCell").forEach(cell => {
+    cell.addEventListener('click', targetCell)
+  })
   startGame(startBtn);
 };
 
@@ -64,7 +72,7 @@ function removeEvents() {
   shipBtns.forEach((el) => {
     el.removeEventListener("click", btnClick);
   });
-  playerBoardCells.forEach((cell) => {
+  playerCells.forEach((cell) => {
     cell.removeEventListener("click", cellEvent);
   });
 }

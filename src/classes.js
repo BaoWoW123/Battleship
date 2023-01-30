@@ -17,7 +17,8 @@ class Ship {
 }
 
 class Gameboard {
-  constructor() {
+  constructor(name) {
+    this.name = name;
     if (!this.board) this.createBoard();
   }
 
@@ -31,41 +32,45 @@ class Gameboard {
       };
     }
   }
-  //CHECK FOR COLLISION +++++++++++++++++++++++++++++
-  //create loop if this cell is null then ok
-  //if cell has ship then dont place ship
+
   placeShip(ship, index, rotate) {
     let row = Math.floor(index / 10);
     let shipRow = Math.floor((index + ship.length - 1) / 10);
     let shipRowVert = row + ship.length;
     //checks if ship is out of bounds
-    if (index >= 100) return;
+    if (index >= 100) return false;
     if (row !== shipRow && rotate === false) {
       return false;
     } else if (shipRowVert > 10 && rotate === true) {
       return false;
     } else {
-      if (rotate === true) {
-        this.clearPrevShip(ship);
-        for (let i = 0; i < ship.length * 10; i += 10) {
-          if (this.highlightCell(ship, index + i) == false) return; //highlights & checks for overlap
-          this.board[index + i].hasShip = true;
-          this.board[index + i].ship = ship;
-        }
-      } else {
-        this.clearPrevShip(ship);
-        for (let i = 0; i < ship.length; i++) {
-          if (this.highlightCell(ship, index + i) == false) return;
-          this.board[index + i].hasShip = true;
-          this.board[index + i].ship = ship;
-        }
+      let cells = document.querySelectorAll(".cell");
+      let compCells = document.querySelectorAll(".compCell");
+      let increment = 1;
+      if (rotate === true) increment = 10; //increments to 10 for vertical placement
+      this.name === "player"
+        ? this.clearPrevShip(ship, cells)
+        : this.clearPrevShip(ship, compCells);
+      for (let i = 0; i < ship.length * increment; i += increment) {
+        //checks for overlap on both boards
+        if (
+          this.name === "player" &&
+          this.highlightCell(ship, index + i, cells) == false
+        )
+          return false;
+        if (
+          this.name === "comp" &&
+          this.highlightCell(ship, index + i, compCells) === false //TEST:Might need to add condition to function to remove compBoard highlight
+        )
+          return false;
+        this.board[index + i].hasShip = true;
+        this.board[index + i].ship = ship;
       }
     }
     return this;
   }
 
-  clearPrevShip(ship) {
-    let cells = document.querySelectorAll(".cell");
+  clearPrevShip(ship, cells) {
     for (let i = 0; i < 100; i++) {
       if (this.board[i].ship === ship) {
         this.board[i].ship = null;
@@ -74,11 +79,10 @@ class Gameboard {
       }
     }
   }
-  highlightCell(ship, index) {
-    let cells = document.querySelectorAll(".cell");
+  highlightCell(ship, index, cells) {
     cells[index].classList.add("hasShip");
     if (this.board[index].hasShip == true && this.board[index].ship !== ship) {
-      this.clearPrevShip(ship)
+      this.clearPrevShip(ship, cells);
       return false;
     }
   }
@@ -119,10 +123,54 @@ class Player {
     }
   }
 }
-const gameBoard = new Gameboard();
-let battleship = new Ship(5);
+const gameBoard = new Gameboard("player");
+const compBoard = new Gameboard("comp");
 const player = new Player("me");
 const computer = new Player("computer");
-player.battleship = battleship;
+//let battleship = new Ship(5); TEST
 
-export { Ship, battleship, gameBoard, Gameboard, player, Player, computer };
+let compCarrier = new Ship(5);
+let compBattleship = new Ship(4);
+let compCruiser = new Ship(3);
+let compSub = new Ship(3);
+let compDestroyer = new Ship(2);
+
+computer.carrier = compCarrier;
+computer.battleship = compBattleship;
+computer.cruiser = compCruiser;
+computer.sub = compSub;
+computer.destroyer = compDestroyer;
+
+player.carrier = new Ship(5);
+player.battleship = new Ship(4);
+player.cruiser = new Ship(3);
+player.sub = new Ship(3);
+player.destroyer = new Ship(2);
+
+let playerShips = [
+  player.carrier,
+  player.battleship,
+  player.cruiser,
+  player.sub,
+  player.destroyer,
+];
+
+let compShips = [
+  compCarrier,
+  compBattleship,
+  compCruiser,
+  compSub,
+  compDestroyer,
+];
+
+export {
+  Ship,
+  gameBoard,
+  Gameboard,
+  player,
+  Player,
+  computer,
+  playerShips,
+  compShips,
+  compBoard,
+};
