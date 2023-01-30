@@ -87,6 +87,13 @@ span {
   transition: 0.2s;
   cursor: grab;
 }
+
+.hit {
+  background-color: red;
+}
+.miss {
+  background-color: darkblue;
+}
 button {
   font-size: 1.5rem;
   border-radius: 8px;

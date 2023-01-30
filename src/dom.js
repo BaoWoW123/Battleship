@@ -1,13 +1,18 @@
-import { hoverShip, startGame, selectShip, checkBoard } from "./script";
+import {
+  hoverShip,
+  startRound,
+  selectShip,
+  checkBoard,
+  createCompBoard,
+} from "./script";
 
-const board = document.querySelector(".board");
 const playerBoard = document.querySelector(".playerBoard");
 const computerBoard = document.querySelector(".computerBoard");
 const startBtn = document.querySelector(".startBtn");
 const rotateBtn = document.querySelector(".rotateBtn");
 const shipBtns = document.querySelectorAll(".ship");
 const midBoard = document.querySelector(".UIBoard");
-let playerBoardCells;
+let playerCells;
 let rotate = false;
 
 (function createBoards() {
@@ -18,11 +23,11 @@ let rotate = false;
     cell.addEventListener("click", cellEvent); //unable to pass argmuments directly to eventlistener
     playerBoard.append(cell);
   }
-  playerBoardCells = document.querySelectorAll(".cell");
+  playerCells = document.querySelectorAll(".cell");
 
   for (let i = 0; i < 100; i++) {
     const cell = document.createElement("div");
-    cell.className = "cell";
+    cell.className = "compCell";
     cell.dataset.id = i;
     computerBoard.append(cell);
   }
@@ -39,13 +44,17 @@ rotateBtn.onclick = () => {
 };
 
 startBtn.onclick = () => {
-  if(checkBoard() === false) return alert("Place all ships!");
+  if (checkBoard() === false) return alert("Place all ships!");
   removeEvents();
   midBoard.innerHTML = "";
   let resetBtn = document.createElement("button");
   resetBtn.textContent = "Restart";
   midBoard.append(resetBtn);
-  startGame(startBtn);
+  resetBtn.onclick = () => window.location.reload();
+  createCompBoard();
+  document.querySelectorAll(".compCell").forEach((cell) => {
+    cell.addEventListener("click", startRound);
+  });
 };
 
 shipBtns.forEach((btn) => {
@@ -64,7 +73,7 @@ function removeEvents() {
   shipBtns.forEach((el) => {
     el.removeEventListener("click", btnClick);
   });
-  playerBoardCells.forEach((cell) => {
+  playerCells.forEach((cell) => {
     cell.removeEventListener("click", cellEvent);
   });
 }
