@@ -107,6 +107,9 @@ function checkBoard() {
   });
   return total === 5;
 }
+function targetCell() {
+    console.log(event.target.dataset.id)
+}
 
 function createCompBoard() {
   for (let i = 0; i < compShips.length; i++) {
