@@ -31,7 +31,6 @@ let rotate = false;
     cell.dataset.id = i;
     computerBoard.append(cell);
   }
-  compCells = document.querySelectorAll('.compCell')
 })();
 
 rotateBtn.onclick = () => {
@@ -44,7 +43,6 @@ rotateBtn.onclick = () => {
   }
 };
 
-createCompBoard(); //TEST
 startBtn.onclick = () => {
   if (checkBoard() === false) return alert("Place all ships!");
   removeEvents();
